@@ -19,7 +19,7 @@ JOBMSGQFL(*WRAP) ALWMLTTHD(*YES)
 ```
 
 # Sample C# test sequence   
-This is a very simple sample sequence.   
+This is a very simple sample connect and query sequence.   
 
 Copy the following statements into a Dotnet C# Console project. 
 ```
