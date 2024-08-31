@@ -8,7 +8,7 @@ https://github.com/Mapepire-IBMi
 
 # Starting up mapepire server without SSL for testing
 Start up the mapepire server without SSL via the following command:   
-```/QOpenSys/pkgs/bin/mapepire MP_UNSECURE=true```
+```MP_UNSECURE=true /QOpenSys/pkgs/bin/mapepire```
 
 # Sample C# test sequence   
 This is a very simple sample sequence.   
