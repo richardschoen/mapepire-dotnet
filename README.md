@@ -4,7 +4,7 @@ This class is a dotnet WebSocket client class for the IBM i Mapepire WebSocket D
 Learn more about the IBM i Mapepire Server component here:   
 https://github.com/Mapepire-IBMi
 
-```Note: Currently there is an issue with DotNet WebSockets and SSL. To test you will need to disabled SSL when starting up the WebSocket server.```
+```Note: Currently there is an issue with DotNet WebSockets and SSL. To test you will need to disable SSL when starting up the WebSocket server.```
 
 # Starting up mapepire server without SSL for testing
 Start up the mapepire server without SSL via the following command:   
