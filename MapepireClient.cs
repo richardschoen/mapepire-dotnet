@@ -27,6 +27,7 @@ namespace MapepireClient
         private bool _connected = false;
         private string _connurl = "";
         private string _lastError = "";
+        private string _connectResults = "";
         private string _queryResults = "";
         private bool _querySuccess= false;
         private string _clCmdResults = "";
@@ -54,6 +55,15 @@ namespace MapepireClient
         public string GetLastError()
         {
             return _lastError;
+        }
+
+        /// <summary>
+        /// Get last connection results
+        /// </summary>
+        /// <returns>JSON query results</returns>
+        public string GetConnectionResults()
+        {
+            return _connectResults;
         }
 
         /// <summary>
@@ -155,6 +165,7 @@ namespace MapepireClient
             {
 
                 _lastError = "";
+                _connectResults = "";
 
                 // Check if connected. Use existing connection if so
                 if (IsConnected())
@@ -188,7 +199,8 @@ namespace MapepireClient
                 // Attempt to connect to WebSocket
                 await _clientWebSocket.ConnectAsync(ibmiUri, CancellationToken.None);
 
-                Console.WriteLine("Connection state: " + _clientWebSocket.State);
+                //Console.WriteLine("Connection state: " + _clientWebSocket.State);
+                _connectResults = "Connection state: " + _clientWebSocket.State + "\n";
 
                 // Send connect request to WebSocket server now that socket connected
                 ArraySegment<byte> bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes("{\"id\":\"connecting\", \"type\":\"connect\", \"technique\":\"tcp\"}\n"));
@@ -198,7 +210,8 @@ namespace MapepireClient
                 // Get response from WebSocket request
                 WebSocketReceiveResult result = await _clientWebSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), CancellationToken.None);
                 String msg = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
-                Console.WriteLine(msg);
+                //Console.WriteLine(msg);
+                _connectResults = _connectResults + msg + "\n";
 
                 // Set connected status
                 _connected = true;
@@ -238,6 +251,7 @@ namespace MapepireClient
 
                 // Reset connected status
                 _connected = false;
+                _connectResults = "";
                 _clCmdResults = "";
                 _clCmdSuccess = false;
                 _queryResults = "";
@@ -496,7 +510,7 @@ namespace MapepireClient
             }
 
         }
-        f
+        
     }
 
 }
