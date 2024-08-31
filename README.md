@@ -6,9 +6,17 @@ https://github.com/Mapepire-IBMi
 
 ```Note: Currently there is an issue with DotNet WebSockets and SSL. To test you will need to disable SSL when starting up the WebSocket server.```
 
-# Starting up mapepire server without SSL for testing
+# Starting up mapepire server without SSL for testing   
 Start up the mapepire server without SSL via the following command:   
 ```MP_UNSECURE=true /QOpenSys/pkgs/bin/mapepire```
+
+# Submit start up for mapepire server without SSL via QSHBASH   
+```
+SBMJOB CMD(QSHONI/QSHBASH CMDLINE('MP_UNSECURE=true /QOpenSys/pkgs/bin/mapepire') 
+SETPKGPATH(*YES) PRTSTDOUT(*YES) PRTSPLF(STRMAPEPIR)
+PASEJOBNAM(MAPEPIRETH)) JOB(STRMAPEPIR) JOBQ(QUSRNOMAX) USER(&USERID)
+JOBMSGQFL(*WRAP) ALWMLTTHD(*YES)            
+```
 
 # Sample C# test sequence   
 This is a very simple sample sequence.   
