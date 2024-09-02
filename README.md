@@ -4,7 +4,7 @@ This class is a dotnet WebSocket client class for the IBM i Mapepire WebSocket D
 Learn more about the IBM i Mapepire Server component here:   
 https://github.com/Mapepire-IBMi
 
-❗ Note: Currently there is an issue with DotNet WebSockets and SSL. To test you will need to disable SSL when starting up the WebSocket server. Or make sure you're testing on Windows 11 where TLS 1.3 client is supported. Or rework the C# class to use the commerial Rebex controls if TLS1.3 is needed on Windows 10. Rebex supports TLS 1.3 on several platforms natively.```
+❗ Note: Currently there is an issue with DotNet WebSockets and SSL. To test you will need to disable SSL when starting up the WebSocket server. Or make sure you're testing on Windows 11 where TLS 1.3 client is supported. Or rework the C# class to use the commerial Rebex controls if TLS1.3 is needed on Windows 10. Rebex supports TLS 1.3 on several platforms natively.
 
 # Starting up mapepire server without SSL for testing   
 Start up the mapepire server without SSL via the following command:   
