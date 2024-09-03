@@ -1,5 +1,5 @@
 # .NET Client class for IBM i Mapepire WebSockets Data Server
-This class is a dotnet WebSocket client class for the IBM i Mapepire WebSocket Data Server component.    
+This class is a .NET WebSocket client class for the IBM i Mapepire WebSocket Data Server component.    
 
 The Mapepire server supports TLS1.3 by default so this class will only work on Windows 11 or other platforms that support TLS1.3 natively unless you disable SSL.  
 
@@ -8,7 +8,7 @@ The Mapepire server supports TLS1.3 by default so this class will only work on W
 Learn more about the IBM i Mapepire Server component here:   
 https://github.com/Mapepire-IBMi
 
-❗ Note: Currently there is an issue with DotNet WebSockets, SSL and Windows 10 and TLS 1.3. To test you will need to disable SSL when starting up the WebSocket server. Or make sure you're testing on Windows 11 where TLS 1.3 client is supported and make sure your have a valid certificate or set the allowinvalidcerts switch to true to bypass strict certificate checking. Or rework the C# class to use the commerial Rebex controls if TLS1.3 is needed on Windows 10 and want to also allow invalid certificates on Windows 10. Rebex supports TLS 1.3 on several platforms natively and can allow invalid certificates to be used. 
+❗ Note: Currently there is an issue with DotNet WebSockets, SSL and Windows 10 and TLS 1.3. To test on Windows 10 you will need to disable SSL when starting up the WebSocket server. Or make sure you're testing on Windows 11 where TLS 1.3 client is supported and make sure your have a valid certificate or set the ```allowinvalidcerts``` switch to true to bypass strict certificate checking. Or rework the C# class to use the commercial Rebex WebSocket controls if TLS1.3 is needed on Windows 10 and you want to also allow invalid certificates on Windows 10. Rebex supports TLS 1.3 on several platforms natively and can allow invalid certificates to be used. 
 
 # Starting up mapepire server without SSL for testing   
 Start up the mapepire server without SSL via the following command:   
