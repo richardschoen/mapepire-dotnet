@@ -29,7 +29,7 @@ namespace MapepireClient
         private string _lastError = "";
         private string _connectResults = "";
         private string _queryResults = "";
-        private bool _querySuccess= false;
+        private bool _querySuccess = false;
         private string _clCmdResults = "";
         private bool _clCmdSuccess = false;
         private bool _pingAlive = false;
@@ -157,8 +157,12 @@ namespace MapepireClient
         /// Use secure socket-wss://, True=wss://, False=ws://
         /// Default=true;
         /// </param>
+        /// <param name="allowinvalidcert">Allow invalid certificates. 
+        /// True=Allow any cert to pass through, essentially ignore checks.
+        /// False=Certificates must be valid. Default=False
+        /// </param>
         /// <returns>True=Connected, False=Error. Use GetLastError to check message.</returns>
-        public async Task<bool> Connect(string host,string user, string password, int port = 8076, bool secure = true)
+        public async Task<bool> Connect(string host, string user, string password, int port = 8076, bool secure = true,bool allowinvalidcert=false)
         {
 
             try
@@ -166,6 +170,7 @@ namespace MapepireClient
 
                 _lastError = "";
                 _connectResults = "";
+                _connected = false;
 
                 // Check if connected. Use existing connection if so
                 if (IsConnected())
@@ -175,7 +180,7 @@ namespace MapepireClient
                 }
 
                 // Create new web socket
-                _clientWebSocket= new ClientWebSocket();
+                _clientWebSocket = new ClientWebSocket();
 
                 // Build Secure/Unsecure URL for WebSocket connection
                 if (secure)
@@ -192,6 +197,18 @@ namespace MapepireClient
                 string userauth = ($"{user}:{password}");
                 string encodedauth = (Convert.ToBase64String(Encoding.Default.GetBytes(userauth)));
                 _clientWebSocket.Options.SetRequestHeader("Authorization", "Basic " + encodedauth);
+
+                // Set SSL/TLS certificate validation. If we want to allow all certs,
+                // including invalid ones,simply return true from the validation callback.
+                if (allowinvalidcert)
+                {
+                    // Simpler way to write as a one-liner.
+                    //_clientWebSocket.Options.RemoteCertificateValidationCallback = (sender, X509Certificate, X509Chain, SslPolicyErrors) => true;
+                    _clientWebSocket.Options.RemoteCertificateValidationCallback = (message, cert, chain, sslPolicyErrors) =>
+                     {
+                         return true;
+                     };
+                }
 
                 // Set the URI
                 Uri ibmiUri = new Uri(_connurl);
@@ -223,6 +240,7 @@ namespace MapepireClient
             {
                 {
                     _lastError = ex.Message;
+                    _connected = false;
                     return false;
                 }
 
@@ -241,7 +259,7 @@ namespace MapepireClient
 
                 _lastError = "";
 
-                if (_clientWebSocket==null)
+                if (_clientWebSocket == null)
                 {
                     throw new Exception("WebSocket client is not instantiated. You must Connect first.");
                 }
@@ -257,7 +275,7 @@ namespace MapepireClient
                 _queryResults = "";
                 _querySuccess = false;
                 _pingResults = "";
-                _pingSuccess=false;
+                _pingSuccess = false;
                 _pingAlive = false;
                 _pingDbAlive = false;
 
@@ -286,7 +304,7 @@ namespace MapepireClient
         /// <param name="id">Query ID. Default=q1</param>
         /// <returns>True=Query success. False=Query command error.</returns>
 
-        public async Task<bool> ExecSqlQuery(string sql,string id="Q1")
+        public async Task<bool> ExecSqlQuery(string sql, string id = "Q1")
         {
 
             try
@@ -311,7 +329,7 @@ namespace MapepireClient
 
                 // Compose the JSON request
                 string queryjson = "{\"id\":\"@@ID\", \"type\":\"sql\", \"sql\":\"@@SQLQUERY\"}\n";
-                queryjson = queryjson.Replace("@@ID",id);
+                queryjson = queryjson.Replace("@@ID", id);
                 queryjson = queryjson.Replace("@@SQLQUERY", sql);
 
                 bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(queryjson));
@@ -321,7 +339,7 @@ namespace MapepireClient
                 msg = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
 
                 // Save query results from return message
-                _queryResults=msg;
+                _queryResults = msg;
 
                 // Scan JSON for success
                 if (msg.Contains("\"success\":true"))
@@ -358,7 +376,7 @@ namespace MapepireClient
         /// <param name="cmd">CL command</param>
         /// <param name="id">Command ID. Default=cmd1</param>
         /// <returns>True=Command success. False=CL command error.</returns>
-        public async Task<bool> ExecClCommand(string cmd, string id="cmd1")
+        public async Task<bool> ExecClCommand(string cmd, string id = "cmd1")
         {
 
             try
@@ -429,7 +447,7 @@ namespace MapepireClient
         /// Run connection ping
         /// </summary>
         /// <returns>True=Command success. False=CL command error.</returns>
-        public async Task<bool> Ping(string id="ping1")
+        public async Task<bool> Ping(string id = "ping1")
         {
 
             try
@@ -510,7 +528,7 @@ namespace MapepireClient
             }
 
         }
-        
+
     }
 
 }
